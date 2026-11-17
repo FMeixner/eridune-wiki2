@@ -1,0 +1,14 @@
+{
+  "name": "Carte d'Eridune — Reiseatlas",
+  "short_name": "Carte",
+  "description": "Interaktive Karte des Kontinents Eridune — Orte mit Verweisen ins Register.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#E6E7E1",
+  "theme_color": "#E6E7E1",
+  "lang": "de",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
