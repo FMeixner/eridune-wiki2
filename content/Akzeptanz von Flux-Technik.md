@@ -1,0 +1,20 @@
+---
+tags: [eridune, konzept, gesellschaft]
+typ: konzept
+gewicht: 50
+wissensebene: volksglaube
+aktualisiert: 2026-11-10
+---
+# Akzeptanz von Flux-Technik
+
+Wo die Grenze der Akzeptanz verläuft, ist nicht allgemein beantwortbar. Fluxbetriebene Prothesen finden manche in Ordnung, andere sind Puristen; Hardliner lehnen sogar fluxbetriebene Heizungen ab. Generell ist die Mehrheit skeptisch, sobald Flux nicht nur an, sondern in den Körper kommen könnte.
+
+Niemand isst Flux direkt. Skeptisch sind viele, wenn Lebensmittel mit Fluxtechnik geerntet, gekocht oder verarbeitet werden; Ackerbau und Nahrungsmittelerzeugung per Fluxtechnik sind hoch umstritten, und die meisten wollen daheim natürlich essen. Purismus können sich nur die Reichen leisten — reiche Alchemisten und [[Alte Häuser]] mit Geld. Reiche Alchemisten würden öffentlich demonstrativ in ihr „Produkt“ beißen, um Harmlosigkeit zu zeigen → [[Alchemistengilde]].
+
+Die Akzeptanz fällt also in einem Gefälle: Technik im Umfeld (Heizung), am Körper (Prothese), über die Nahrung in den Körper. Was man isst, wird Teil von einem; darum liegt die Schwelle beim Essen am höchsten. Natürliches Essen ist ein Statusmarker — ausgerechnet die, die Flux verkaufen, leben daheim puristisch. Die [[Infernis]] sind der Fall, in dem Flux ganz im Körper angekommen ist — und vielen gerade deshalb unheimlich.
+
+## Ungeklärt
+- Was essen die, die sich keinen Purismus leisten können, und wie denken sie darüber? Das Korn-Embargo von [[Ey-Minid]] macht Flux-Landwirtschaft für die Stadt immer unverzichtbarer.
+- Woran erkennt man, ob ein Lebensmittel mit Fluxtechnik erzeugt oder verarbeitet wurde, und wer kontrolliert das?
+- Sind die Hardliner ein Flügel des [[Erbeneid]] oder quer durch die Gesellschaft verteilt?
+

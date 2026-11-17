@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Register von Eridune: Orte, Personen, Häuser, Fraktionen und Mythen einer Daggerheart-Kampagne.">
+<meta name="theme-color" content="#E6E7E1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14181D" media="(prefers-color-scheme: dark)">
+<title>Eridune</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%231C2026'/%3E%3Ctext x='32' y='47' text-anchor='middle' font-family='Georgia,serif' font-size='44' fill='%23E6E7E1'%3EE%3C/text%3E%3Crect x='44' y='8' width='12' height='18' fill='%238C2F39'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@500&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem("eridune.theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t;}catch(e){}</script>
+<style>
+/* ============================================================
+   Eridune – Register von Calveris
+   Ein Konversationslexikon unter Nullgaslicht:
+   kühles Nebelpapier, Tinte, Nullgas-Grün für Verweise,
+   Siegelrot für das Daumenregister.
+   ============================================================ */
+:root {
+  --paper: #E6E7E1;
+  --paper-deep: #DCDED7;
+  --ink: #1C2026;
+  --ink-soft: #4D5560;
+  --ink-faint: #737B84;
+  --rule: #BFC4BD;
+  --flux: #0E6F6D;
+  --flux-hover: #0A5250;
+  --siegel: #8C2F39;
+  --siegel-ink: #F3EEEA;
+  --mark: rgba(14, 111, 109, 0.16);
+  --shadow: 0 18px 40px -24px rgba(28, 32, 38, 0.45);
+
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --text: "Alegreya", "Iowan Old Style", Georgia, serif;
+  --sc: "Alegreya SC", "Alegreya", Georgia, serif;
+
+  --measure: 34rem;
+  --rail: 18.5rem;
+  --tabs: 2.1rem;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14181D;
+    --paper-deep: #1A1F25;
+    --ink: #DADDD6;
+    --ink-soft: #A3AAB1;
+    --ink-faint: #7C848D;
+    --rule: #2E353D;
+    --flux: #63C4BC;
+    --flux-hover: #8FDCD5;
+    --siegel: #B9505B;
+    --siegel-ink: #FBF3F3;
+    --mark: rgba(99, 196, 188, 0.2);
+    --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.8);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14181D;
+  --paper-deep: #1A1F25;
+  --ink: #DADDD6;
+  --ink-soft: #A3AAB1;
+  --ink-faint: #7C848D;
+  --rule: #2E353D;
+  --flux: #63C4BC;
+  --flux-hover: #8FDCD5;
+  --siegel: #B9505B;
+  --siegel-ink: #FBF3F3;
+  --mark: rgba(99, 196, 188, 0.2);
+  --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.8);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 5rem; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 1.1875rem;
+  line-height: 1.6;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+a { color: var(--flux); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+a:hover { color: var(--flux-hover); }
+:focus-visible { outline: 2px solid var(--flux); outline-offset: 3px; border-radius: 2px; }
+::selection { background: var(--mark); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Gerüst ---------- */
+.shell { display: grid; grid-template-columns: var(--rail) minmax(0, 1fr); min-height: 100vh; }
+.rail {
+  position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column;
+  border-right: 1px solid var(--rule);
+  background: var(--paper-deep);
+}
+.main { min-width: 0; padding: 4.5rem clamp(1.5rem, 5vw, 5.5rem) 4rem; padding-right: calc(clamp(1.5rem, 5vw, 5.5rem) + var(--tabs)); }
+
+/* ---------- Marke ---------- */
+.brand { padding: 1.6rem 1.5rem 1.1rem; text-decoration: none; color: inherit; display: block; }
+.brand-name {
+  color: var(--ink);
+  font-family: var(--display);
+  font-optical-sizing: auto;
+  font-size: 2.15rem; line-height: 1; font-weight: 500; letter-spacing: 0.01em;
+}
+.brand-sub { margin-top: 0.4rem; font-size: 0.95rem; line-height: 1.35; color: var(--ink-soft); font-style: italic; }
+
+/* ---------- Suche ---------- */
+.search { position: relative; padding: 0 1.5rem 1rem; }
+.search input {
+  width: 100%;
+  font: inherit; font-size: 1rem;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.5rem 0.7rem;
+}
+.search input::placeholder { color: var(--ink-faint); font-style: italic; }
+.search input:focus { outline: none; border-color: var(--flux); box-shadow: 0 0 0 3px var(--mark); }
+.results {
+  display: none;
+  position: absolute; left: 1.5rem; right: -12rem; top: calc(100% - 0.4rem); z-index: 40;
+  max-height: 70vh; overflow: auto;
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 3px;
+  box-shadow: var(--shadow);
+}
+.results.open { display: block; }
+.result { display: block; padding: 0.65rem 0.9rem; text-decoration: none; color: var(--ink); border-bottom: 1px solid var(--rule); }
+.result:last-child { border-bottom: 0; }
+.result:hover, .result:focus-visible { background: var(--paper-deep); color: var(--ink); }
+.result-title { font-family: var(--display); font-size: 1.1rem; font-weight: 500; }
+.result-typ { font-style: italic; color: var(--ink-soft); font-size: 0.9rem; margin-left: 0.35rem; }
+.result-snippet { font-size: 0.92rem; line-height: 1.45; color: var(--ink-soft); margin-top: 0.15rem; }
+.result mark { background: var(--mark); color: inherit; border-radius: 2px; }
+.result-empty { padding: 0.8rem 0.9rem; color: var(--ink-soft); font-style: italic; font-size: 0.95rem; }
+
+/* ---------- Register (Navigation) ---------- */
+.register { flex: 1; overflow-y: auto; padding: 0.2rem 0 1.5rem; overscroll-behavior: contain; }
+.register-top { padding: 0.15rem 1.5rem 0.6rem; display: flex; gap: 1.1rem; font-size: 1rem; }
+.register-top a { color: var(--ink); text-decoration: none; }
+.register-top a:hover { color: var(--flux); }
+.register-top a.active { color: var(--siegel); }
+.gebiet { margin: 0; }
+.gebiet summary {
+  list-style: none; cursor: pointer;
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: 0.55rem 1.5rem 0.25rem;
+  font-family: var(--sc); font-weight: 500; font-size: 1.02rem; letter-spacing: 0.03em;
+  color: var(--ink-soft);
+}
+.gebiet summary::-webkit-details-marker { display: none; }
+.gebiet summary:hover { color: var(--ink); }
+.gebiet summary .zahl { font-family: var(--text); font-size: 0.85rem; color: var(--ink-faint); letter-spacing: 0; }
+.gebiet ul { list-style: none; margin: 0 0 0.4rem; padding: 0; }
+.gebiet li a {
+  display: block; padding: 0.14rem 1.5rem 0.14rem 2.1rem;
+  font-size: 1.02rem; line-height: 1.35; color: var(--ink); text-decoration: none;
+  border-left: 3px solid transparent;
+}
+.gebiet li a.zentral { font-weight: 700; }
+.gebiet li a:hover { color: var(--flux); }
+.gebiet li a.active { border-left-color: var(--siegel); color: var(--siegel); background: color-mix(in srgb, var(--siegel) 7%, transparent); }
+
+.rail-foot { border-top: 1px solid var(--rule); padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-size: 0.9rem; color: var(--ink-faint); }
+.theme-btn {
+  font: inherit; font-size: 0.9rem; color: var(--ink-soft);
+  background: none; border: 1px solid var(--rule); border-radius: 3px;
+  padding: 0.25rem 0.6rem; cursor: pointer;
+}
+.theme-btn:hover { color: var(--ink); border-color: var(--ink-faint); }
+
+/* ---------- Daumenregister ---------- */
+.daumen {
+  position: fixed; top: 0; right: 0; bottom: 0; width: var(--tabs); z-index: 20;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 1rem 0;
+  border-left: 1px solid var(--rule);
+  background: var(--paper);
+}
+.daumen a, .daumen span {
+  display: flex; align-items: center; justify-content: center;
+  flex: 1 1 0; max-height: 2rem; min-height: 1.15rem;
+  font-family: var(--display); font-size: 0.95rem; font-weight: 500;
+  text-decoration: none; color: var(--ink-soft);
+}
+.daumen span { color: var(--rule); }
+.daumen a:hover { color: var(--flux); }
+.daumen a.active {
+  background: var(--siegel); color: var(--siegel-ink);
+  margin-left: -0.55rem; border-radius: 3px 0 0 3px;
+  box-shadow: -2px 0 0 0 var(--paper);
+}
+
+/* ---------- Artikel ---------- */
+.content { max-width: calc(var(--measure) + 15rem); }
+.kopf { max-width: var(--measure); margin-bottom: 2rem; }
+.lemma {
+  font-family: var(--display);
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: clamp(2.5rem, 2rem + 2.6vw, 4.1rem);
+  line-height: 1.02;
+  letter-spacing: -0.005em;
+  margin: 0;
+  text-wrap: balance;
+  hyphens: manual;
+}
+.lemma-zeile { margin: 0.75rem 0 0; color: var(--ink-soft); font-size: 1.05rem; line-height: 1.45; }
+.lemma-zeile .typ { font-family: var(--sc); font-weight: 500; letter-spacing: 0.03em; color: var(--ink); }
+.lemma-zeile .status { color: var(--siegel); }
+.lemma-zeile em { color: var(--ink); }
+
+.article { max-width: var(--measure); hyphens: auto; }
+.article > :first-child { margin-top: 0; }
+.article p { margin: 0 0 1.05em; }
+.article h2 {
+  font-family: var(--display); font-optical-sizing: auto;
+  font-weight: 500; font-size: 1.6rem; line-height: 1.2;
+  margin: 2.2em 0 0.55em;
+}
+.article h3 { font-family: var(--display); font-weight: 600; font-size: 1.25rem; margin: 1.8em 0 0.4em; }
+.article ul, .article ol { margin: 0 0 1.1em; padding-left: 1.2em; }
+.article li { margin: 0.2em 0; }
+.article li::marker { color: var(--ink-faint); }
+.article strong { font-weight: 700; }
+.article blockquote {
+  margin: 1.4em 0; padding: 0;
+  font-family: var(--display); font-style: italic; font-size: 1.3rem; line-height: 1.4;
+  color: var(--ink);
+}
+.article blockquote p { margin: 0; }
+.article code { font-size: 0.9em; background: var(--paper-deep); padding: 0.05em 0.3em; border-radius: 2px; }
+.article hr { border: 0; border-top: 1px solid var(--rule); margin: 2em 0; }
+.article .wl-fehlt { border-bottom: 1px dotted var(--ink-faint); cursor: help; }
+
+.article table { width: 100%; border-collapse: collapse; margin: 0.4em 0 1.6em; font-size: 1rem; line-height: 1.45; }
+.article th { text-align: left; font-family: var(--sc); font-weight: 500; letter-spacing: 0.03em; color: var(--ink-soft); border-bottom: 1px solid var(--ink); padding: 0.4em 0.8em 0.4em 0; }
+.article td { border-bottom: 1px solid var(--rule); padding: 0.5em 0.8em 0.5em 0; vertical-align: top; }
+.article td:first-child { white-space: nowrap; color: var(--ink-soft); font-style: italic; padding-right: 1.4em; }
+.table-wrap { overflow-x: auto; }
+
+/* Ungeklärt: hängende Fragezeichen im Rand */
+.article h2.ungeklaert { font-style: italic; }
+.article ul.fragen { list-style: none; padding-left: 0; }
+.article ul.fragen li { position: relative; margin: 0.45em 0; }
+.article ul.fragen li::before {
+  content: "?"; position: absolute; left: -1.3em; top: -0.05em;
+  font-family: var(--display); font-weight: 600; font-size: 1.15em; color: var(--siegel);
+}
+
+/* Übersicht: Linkketten mit Mittelpunkten aus den Inhalten auflockern */
+.article p.linkkette { line-height: 1.9; }
+
+/* Callouts */
+.callout { border-left: 3px solid var(--flux); padding: 0.2em 0 0.2em 1em; margin: 1.4em 0; }
+.callout-title { font-family: var(--sc); font-weight: 500; letter-spacing: 0.03em; margin-bottom: 0.2em; }
+
+/* Körper mit Randspalte */
+.koerper { display: grid; grid-template-columns: minmax(0, var(--measure)) 12.5rem; column-gap: clamp(2.5rem, 5vw, 5rem); align-items: start; }
+.rand { position: sticky; top: 2.5rem; font-size: 0.98rem; line-height: 1.45; padding-top: 0.35rem; }
+.rand:empty { display: none; }
+.rand h2 { font-family: var(--sc); font-weight: 500; font-size: 1rem; letter-spacing: 0.03em; color: var(--ink-soft); margin: 0 0 0.5rem; padding-bottom: 0.3rem; border-bottom: 1px solid var(--rule); }
+.rand ul { list-style: none; margin: 0; padding: 0; }
+.rand li { margin: 0.22rem 0; }
+.rand a { color: var(--ink); text-decoration: none; }
+.rand a:hover { color: var(--flux); text-decoration: underline; }
+@media (max-width: 1240px) {
+  .koerper { display: block; }
+  .rand { position: static; max-width: var(--measure); margin-top: 3rem; }
+  .rand ul { columns: 2 12rem; column-gap: 2rem; }
+}
+.fuss { max-width: var(--measure); margin-top: 3.5rem; padding-top: 1rem; border-top: 1px solid var(--rule); font-size: 0.95rem; color: var(--ink-faint); font-style: italic; }
+.laden { color: var(--ink-faint); font-style: italic; padding: 3rem 0; }
+.fehler h1 { font-family: var(--display); font-weight: 500; font-size: 2.2rem; margin: 0 0 0.5rem; }
+
+/* ---------- Startseite ---------- */
+.start-kopf { max-width: 46rem; margin-bottom: 3.5rem; }
+.start-lemma {
+  font-family: var(--display); font-optical-sizing: auto;
+  font-weight: 400; font-size: clamp(4.2rem, 2rem + 11vw, 10rem); line-height: 0.86;
+  letter-spacing: -0.02em; margin: 0 0 1.5rem -0.06em;
+}
+.start-lemma::after {
+  content: ""; display: inline-block; width: 0.09em; height: 0.36em; margin-left: 0.06em;
+  background: var(--siegel); vertical-align: baseline;
+}
+.start-kopf .article { font-size: 1.28rem; line-height: 1.55; max-width: 38rem; }
+.gebiete { display: grid; grid-template-columns: repeat(auto-fill, minmax(14.5rem, 1fr)); gap: 2.2rem 2.6rem; max-width: 62rem; }
+.gebiete section h2 {
+  font-family: var(--sc); font-weight: 500; font-size: 1.1rem; letter-spacing: 0.03em; color: var(--ink-soft);
+  margin: 0 0 0.45rem; padding-bottom: 0.3rem; border-bottom: 1px solid var(--rule);
+}
+.gebiete ul { list-style: none; margin: 0; padding: 0; }
+.gebiete li { margin: 0.15rem 0; line-height: 1.35; }
+.gebiete li a { color: var(--ink); text-decoration: none; }
+.gebiete li a.zentral { font-weight: 700; }
+.gebiete li a:hover { color: var(--flux); text-decoration: underline; }
+
+/* ---------- Register A–Z ---------- */
+.az { columns: 15rem 3; column-gap: 3rem; max-width: 62rem; }
+.az section { break-inside: avoid; margin-bottom: 1.6rem; }
+.az h2 { font-family: var(--display); font-weight: 500; font-size: 2.2rem; line-height: 1; margin: 0 0 0.4rem; color: var(--siegel); scroll-margin-top: 2rem; }
+.az ul { list-style: none; margin: 0; padding: 0; }
+.az li { margin: 0.12rem 0; line-height: 1.35; }
+.az li a { color: var(--ink); text-decoration: none; }
+.az li a:hover { color: var(--flux); text-decoration: underline; }
+.az .typ { font-style: italic; color: var(--ink-faint); font-size: 0.9rem; }
+.az .verweis { color: var(--ink-soft); font-style: italic; }
+.az .verweis a { font-style: normal; }
+
+/* ---------- Mobile ---------- */
+.topbar { display: none; }
+@media (max-width: 1100px) {
+  .daumen { display: none; }
+  .main { padding-right: clamp(1.5rem, 5vw, 5.5rem); }
+}
+@media (max-width: 860px) {
+  body { font-size: 1.125rem; }
+  .shell { display: block; }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    position: sticky; top: 0; z-index: 30;
+    padding: 0.55rem 1rem;
+    background: var(--paper); border-bottom: 1px solid var(--rule);
+  }
+  .topbar .brand-name { font-size: 1.6rem; }
+  .topbar a { color: var(--ink); text-decoration: none; }
+  .menu-btn {
+    font: inherit; font-size: 1rem; color: var(--ink);
+    background: none; border: 1px solid var(--rule); border-radius: 3px; padding: 0.3rem 0.75rem; cursor: pointer;
+  }
+  .rail {
+    position: fixed; inset: 0 auto 0 0; width: min(21rem, 88vw); z-index: 50;
+    transform: translateX(-102%); transition: transform 0.22s ease;
+    box-shadow: var(--shadow);
+  }
+  body.nav-open .rail { transform: none; }
+  .backdrop { position: fixed; inset: 0; z-index: 45; background: rgba(10, 12, 15, 0.45); display: none; }
+  body.nav-open .backdrop { display: block; }
+  .results { right: 1.5rem; }
+  .main { padding: 2rem 1rem 3rem; }
+  .article ul.fragen { padding-left: 1.3em; }
+  .start-kopf { margin-bottom: 2.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rail { transition: none; }
+}
+@media print {
+  .rail, .daumen, .topbar, .backdrop { display: none !important; }
+  .shell { display: block; }
+  .main { padding: 0; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="#/" class="brand-name" aria-label="Eridune, Startseite">Eridune</a>
+  <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="rail">Register</button>
+</header>
+<div class="backdrop" id="backdrop"></div>
+
+<div class="shell">
+  <aside class="rail" id="rail" aria-label="Register">
+    <a class="brand" href="#/">
+      <div class="brand-name">Eridune</div>
+      <div class="brand-sub">Register einer Daggerheart-Kampagne</div>
+    </a>
+    <div class="search" role="search">
+      <label class="visually-hidden" for="search">Im Register suchen</label>
+      <input id="search" type="search" placeholder="Name, Ort, Begriff …" autocomplete="off" spellcheck="false">
+      <div class="results" id="results" role="listbox" aria-label="Suchergebnisse"></div>
+    </div>
+    <nav class="register" id="register" aria-label="Sachgebiete"></nav>
+    <div class="rail-foot">
+      <span id="stand"></span>
+      <button class="theme-btn" id="theme-btn" type="button">Dunkel</button>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+    <div class="content" id="content"><p class="laden">Das Register wird aufgeschlagen …</p></div>
+  </main>
+</div>
+
+<nav class="daumen" id="daumen" aria-label="Register nach Anfangsbuchstaben"></nav>
+
+<script src="vendor/marked.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var manifest = null;
+  var nameIndex = {};   // kleingeschriebener Name/Alias -> Seite
+  var pathIndex = {};   // Pfad -> Seite
+  var pageCache = {};   // Pfad -> { raw, fm, body }
+  var searchReady = false, searchLoading = false, currentEntry = null;
+
+  var contentEl = document.getElementById("content");
+  var registerEl = document.getElementById("register");
+  var daumenEl = document.getElementById("daumen");
+  var searchInput = document.getElementById("search");
+  var resultsEl = document.getElementById("results");
+
+  var TYP = {
+    uebersicht: "Übersicht", ort: "Ort", verkehr: "Verkehrsweg", spielercharakter: "Spielercharakter",
+    person: "Person", haus: "Haus", fraktion: "Fraktion", politik: "Institution", geschichte: "Geschichte",
+    gott: "Gottheit", mythos: "Mythos", kosmologie: "Kosmologie", konzept: "Begriff", volk: "Volk",
+    sprache: "Sprache", vermerk: "Vermerk"
+  };
+  var GEBIETE = [
+    { label: "Personen", typen: ["person"] },
+    { label: "Spielercharaktere", typen: ["spielercharakter"] },
+    { label: "Häuser", typen: ["haus"] },
+    { label: "Hof und Politik", typen: ["politik"] },
+    { label: "Fraktionen", typen: ["fraktion"] },
+    { label: "Orte und Wege", typen: ["ort", "verkehr"] },
+    { label: "Völker", typen: ["volk"] },
+    { label: "Flux und Magie", typen: ["konzept"] },
+    { label: "Geschichte", typen: ["geschichte"] },
+    { label: "Götter und Mythen", typen: ["gott", "mythos"] },
+    { label: "Kosmologie", typen: ["kosmologie"] },
+    { label: "Sprache und Vermerke", typen: ["sprache", "vermerk", "uebersicht"] }
+  ];
+
+  /* ---------- Helfer ---------- */
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+  function enc(p) { return p.split("/").map(encodeURIComponent).join("/"); }
+  function href(p) { return "#/" + enc(p); }
+  function deCmp(a, b) { return a.localeCompare(b, "de", { sensitivity: "base" }); }
+  function initial(s) {
+    var c = s.normalize("NFD").replace(/[̀-ͯ]/g, "").charAt(0).toUpperCase();
+    return /[A-Z]/.test(c) ? c : "#";
+  }
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+
+  function parseFrontmatter(raw) {
+    var fm = { aliases: [] }, body = raw, lines = raw.split("\n");
+    if (lines[0] && lines[0].trim() === "---") {
+      var end = -1;
+      for (var i = 1; i < lines.length; i++) if (lines[i].trim() === "---") { end = i; break; }
+      if (end > 0) {
+        for (var j = 1; j < end; j++) {
+          var m = lines[j].match(/^([A-Za-z_]+):\s*(.*)$/);
+          if (m) fm[m[1]] = m[2].trim();
+        }
+        body = lines.slice(end + 1).join("\n");
+      }
+    }
+    if (typeof fm.aliases === "string") fm.aliases = fm.aliases.replace(/^\[|\]$/g, "").split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+    return { fm: fm, body: body };
+  }
+
+  /* ---------- Notfall-Renderer, falls marked fehlt ---------- */
+  function fbInline(s) {
+    return esc(s).replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>").replace(/\*([^*]+)\*/g, "<em>$1</em>")
+      .replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>');
+  }
+  function fbMarkdown(md) {
+    var L = md.split("\n"), out = [], i = 0, m;
+    while (i < L.length) {
+      var line = L[i];
+      if (!line.trim()) { i++; continue; }
+      if ((m = line.match(/^(#{1,4})\s+(.*)$/))) { out.push("<h" + m[1].length + ">" + fbInline(m[2]) + "</h" + m[1].length + ">"); i++; continue; }
+      if (/^\s*([-*]|\d+\.)\s/.test(line)) {
+        out.push("<ul>");
+        while (i < L.length && /^\s*([-*]|\d+\.)\s/.test(L[i])) { out.push("<li>" + fbInline(L[i].replace(/^\s*([-*]|\d+\.)\s/, "")) + "</li>"); i++; }
+        out.push("</ul>"); continue;
+      }
+      if (/^>/.test(line)) {
+        var q = [];
+        while (i < L.length && /^>/.test(L[i])) { q.push(fbInline(L[i].replace(/^>\s?/, ""))); i++; }
+        out.push("<blockquote><p>" + q.join(" ") + "</p></blockquote>"); continue;
+      }
+      var para = [];
+      while (i < L.length && L[i].trim() && !/^(#{1,4}\s|\s*[-*]\s|\s*\d+\.\s|>)/.test(L[i])) { para.push(L[i]); i++; }
+      out.push("<p>" + fbInline(para.join(" ")) + "</p>");
+    }
+    return out.join("\n");
+  }
+  function fbSafe(md) {
+    var keep = [];
+    md = md.replace(/<a href="[^"]*">[^<]*<\/a>|<span class="wl-fehlt"[^>]*>[^<]*<\/span>/g, function (t) { keep.push(t); return "\u0000" + (keep.length - 1) + "\u0000"; });
+    return fbMarkdown(md).replace(/\u0000(\d+)\u0000/g, function (_, n) { return keep[+n]; });
+  }
+
+  /* ---------- Wiki-Links ---------- */
+  function resolve(name) { return nameIndex[String(name).trim().toLowerCase()] || null; }
+  function wikilink(target, label) {
+    label = (label || target).trim();
+    var e = resolve(target);
+    if (e) return '<a href="' + href(e.path) + '">' + esc(label) + "</a>";
+    return '<span class="wl-fehlt" title="Dazu gibt es noch keinen Eintrag">' + esc(label) + "</span>";
+  }
+  function wikilinks(md) { return md.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, function (_, t, l) { return wikilink(t, l); }); }
+
+  function callouts(html) {
+    var tpl = document.createElement("template");
+    tpl.innerHTML = html;
+    tpl.content.querySelectorAll("blockquote").forEach(function (q) {
+      var first = q.firstElementChild;
+      var m = first && (first.textContent || "").match(/^\[!(\w+)\]\s*(.*)$/);
+      if (!m) return;
+      var div = document.createElement("div");
+      div.className = "callout callout-" + m[1].toLowerCase();
+      div.innerHTML = '<div class="callout-title">' + esc(m[2] || m[1]) + "</div>";
+      first.remove();
+      while (q.firstChild) div.appendChild(q.firstChild);
+      q.replaceWith(div);
+    });
+    tpl.content.querySelectorAll("table").forEach(function (t) {
+      var w = document.createElement("div"); w.className = "table-wrap"; t.replaceWith(w); w.appendChild(t);
+    });
+    return tpl.innerHTML;
+  }
+  function render(md) {
+    var html;
+    if (window.marked && marked.parse) { try { html = marked.parse(md); } catch (e) { html = fbSafe(md); } }
+    else html = fbSafe(md);
+    return callouts(html);
+  }
+  function stripH1(body) { return body.replace(/^\s*#\s+[^\n]*\n+/, ""); }
+
+  /* ---------- Manifest ---------- */
+  function loadManifest() {
+    return fetch("content/manifest.json", { cache: "no-cache" }).then(function (r) {
+      if (!r.ok) throw new Error("content/manifest.json ist nicht erreichbar (" + r.status + ").");
+      return r.json();
+    }).then(function (data) {
+      manifest = data;
+      manifest.pages.forEach(function (p) {
+        p.aliases = p.aliases || [];
+        pathIndex[p.path] = p;
+        nameIndex[p.path.toLowerCase()] = p;
+        nameIndex[p.title.toLowerCase()] = nameIndex[p.title.toLowerCase()] || p;
+        p.aliases.forEach(function (a) { nameIndex[a.toLowerCase()] = nameIndex[a.toLowerCase()] || p; });
+      });
+      document.getElementById("stand").textContent = manifest.pages.length - 1 + " Einträge";
+      buildRegister();
+      buildDaumen();
+    });
+  }
+  function eintraege() { return manifest.pages.filter(function (p) { return p.path !== "index"; }); }
+  function gruppen() {
+    return GEBIETE.map(function (g) {
+      return { label: g.label, items: eintraege().filter(function (p) { return g.typen.indexOf(p.type) >= 0; }).sort(function (a, b) { return deCmp(a.title, b.title); }) };
+    }).filter(function (g) { return g.items.length; });
+  }
+
+  function linkItem(p) {
+    return '<li><a href="' + href(p.path) + '" data-path="' + esc(p.path) + '"' + ((p.w || 0) >= 70 ? ' class="zentral"' : "") + ">" + esc(p.title) + "</a></li>";
+  }
+  function buildRegister() {
+    var open = {};
+    try { open = JSON.parse(store("eridune.gebiete") || "{}"); } catch (e) { open = {}; }
+    var html = '<div class="register-top"><a href="#/" data-path="index">Startseite</a><a href="#/register" data-path="register">A bis Z</a></div>';
+    gruppen().forEach(function (g) {
+      var isOpen = open[g.label] !== false;
+      html += '<details class="gebiet"' + (isOpen ? " open" : "") + ' data-gebiet="' + esc(g.label) + '"><summary>' + esc(g.label) + ' <span class="zahl">' + g.items.length + "</span></summary><ul>" + g.items.map(linkItem).join("") + "</ul></details>";
+    });
+    registerEl.innerHTML = html;
+    registerEl.querySelectorAll("details").forEach(function (d) {
+      d.addEventListener("toggle", function () { open[d.dataset.gebiet] = d.open; store("eridune.gebiete", JSON.stringify(open)); });
+    });
+    registerEl.addEventListener("click", function (e) { if (e.target.closest("a")) closeNav(); });
+  }
+  function buildDaumen() {
+    var have = {};
+    eintraege().forEach(function (p) { have[initial(p.title)] = true; });
+    var html = "";
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(function (c) {
+      html += have[c] ? '<a href="#/register/' + c + '" data-letter="' + c + '" aria-label="Einträge mit ' + c + '">' + c + "</a>" : '<span aria-hidden="true">' + c + "</span>";
+    });
+    daumenEl.innerHTML = html;
+  }
+  function markActive(path, letter) {
+    registerEl.querySelectorAll("a[data-path]").forEach(function (a) {
+      var on = a.dataset.path === path;
+      a.classList.toggle("active", on);
+      if (on) { a.setAttribute("aria-current", "page"); var d = a.closest("details"); if (d && !d.open) d.open = true; }
+      else a.removeAttribute("aria-current");
+    });
+    daumenEl.querySelectorAll("a").forEach(function (a) { a.classList.toggle("active", a.dataset.letter === letter); });
+  }
+
+  /* ---------- Seiten ---------- */
+  function fetchPage(path) {
+    if (pageCache[path]) return Promise.resolve(pageCache[path]);
+    return fetch("content/" + enc(path) + ".md").then(function (r) {
+      if (!r.ok) throw new Error("Die Seite „" + path + "“ ließ sich nicht laden (" + r.status + ").");
+      return r.text();
+    }).then(function (raw) {
+      var parsed = parseFrontmatter(raw);
+      parsed.raw = raw;
+      pageCache[path] = parsed;
+      return parsed;
+    });
+  }
+
+  function kopf(entry, data) {
+    var fm = data.fm || {};
+    var bits = ['<span class="typ">' + esc(TYP[entry.type] || "Eintrag") + "</span>"];
+    if (fm.status) {
+      var tot = /verstorb|gefallen|\btot\b/i.test(fm.status);
+      bits.push('<span class="status">' + (tot ? "† " : "") + esc(fm.status) + "</span>");
+    }
+    var line = bits.join(", ") + ".";
+    if (fm.aliases && fm.aliases.length) line += " Auch genannt " + fm.aliases.map(function (a) { return "<em>" + esc(a) + "</em>"; }).join(", ") + ".";
+    return '<header class="kopf"><h1 class="lemma">' + esc(entry.title) + '</h1><p class="lemma-zeile">' + line + "</p></header>";
+  }
+
+  function decorate(root) {
+    root.querySelectorAll(".article h2").forEach(function (h) {
+      if (!/^(ungekl|offene fragen|gerüchte)/i.test(h.textContent.trim())) return;
+      h.classList.add("ungeklaert");
+      var n = h.nextElementSibling;
+      if (n && n.tagName === "UL") n.classList.add("fragen");
+    });
+    root.querySelectorAll(".article p").forEach(function (p) {
+      if (p.querySelectorAll("a").length >= 4 && (p.textContent.match(/·/g) || []).length >= 3) p.classList.add("linkkette");
+    });
+  }
+
+  function backlinks(entry) {
+    if (!searchReady) return "";
+    var names = [entry.path].concat(entry.aliases || []).map(function (n) { return n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); });
+    var re = new RegExp("\\[\\[\\s*(?:" + names.join("|") + ")\\s*(?:\\||\\]\\])", "i");
+    var hits = [];
+    Object.keys(pageCache).forEach(function (p) {
+      if (p !== entry.path && p !== "index" && pathIndex[p] && re.test(pageCache[p].raw)) hits.push(pathIndex[p]);
+    });
+    if (!hits.length) return "";
+    hits.sort(function (a, b) { return deCmp(a.title, b.title); });
+    return "<h2>Erwähnt in</h2><ul>" + hits.map(function (h) { return '<li><a href="' + href(h.path) + '">' + esc(h.title) + "</a></li>"; }).join("") + "</ul>";
+  }
+  var FUSS = '<p class="fuss">Hier steht, was am Tisch gilt. Was dahinter liegt, erfahrt ihr im Spiel.</p>';
+
+  function showError(title, text) {
+    contentEl.innerHTML = '<div class="fehler"><h1>' + esc(title) + "</h1><p>" + text + '</p><p><a href="#/">Zur Startseite</a> oder <a href="#/register">zum Register von A bis Z</a>.</p></div>';
+  }
+
+  function renderStart(data) {
+    var html = '<div class="start-kopf"><h1 class="start-lemma">Eridune</h1><div class="article">' + render(wikilinks(stripH1(data.body))) + "</div></div>";
+    html += '<div class="gebiete">';
+    gruppen().forEach(function (g) {
+      html += "<section><h2>" + esc(g.label) + "</h2><ul>" + g.items.map(linkItem).join("") + "</ul></section>";
+    });
+    html += "</div>" + FUSS;
+    contentEl.innerHTML = html;
+    document.title = "Eridune";
+  }
+
+  function renderAZ(letter) {
+    var rows = [];
+    eintraege().forEach(function (p) {
+      rows.push({ name: p.title, p: p });
+      p.aliases.forEach(function (a) { if (a.toLowerCase() !== p.title.toLowerCase()) rows.push({ name: a, p: p, verweis: true }); });
+    });
+    rows.sort(function (a, b) { return deCmp(a.name, b.name); });
+    var by = {};
+    rows.forEach(function (r) { var c = initial(r.name); (by[c] = by[c] || []).push(r); });
+    var html = '<header class="kopf"><h1 class="lemma">Register von A bis Z</h1><p class="lemma-zeile">Alle Einträge und ihre anderen Namen. Kursiv gesetzte Namen verweisen auf den Haupteintrag.</p></header><div class="az">';
+    Object.keys(by).sort().forEach(function (c) {
+      html += '<section><h2 id="buchstabe-' + c + '">' + c + "</h2><ul>";
+      by[c].forEach(function (r) {
+        if (r.verweis) html += '<li class="verweis">' + esc(r.name) + ', siehe <a href="' + href(r.p.path) + '">' + esc(r.p.title) + "</a></li>";
+        else html += '<li><a href="' + href(r.p.path) + '">' + esc(r.name) + '</a> <span class="typ">' + esc(TYP[r.p.type] || "") + "</span></li>";
+      });
+      html += "</ul></section>";
+    });
+    contentEl.innerHTML = html + "</div>" + FUSS;
+    document.title = "Register · Eridune";
+    var target = letter && document.getElementById("buchstabe-" + letter);
+    if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
+  }
+
+  function route() {
+    var raw = location.hash.replace(/^#\/?/, "");
+    var path = raw ? raw.split("/").map(decodeURIComponent).join("/") : "index";
+    closeResults();
+
+    if (path === "register" || path.indexOf("register/") === 0) {
+      var letter = path.split("/")[1] || "";
+      markActive("register", letter);
+      currentEntry = null;
+      renderAZ(letter);
+      ensureSearchIndex();
+      return;
+    }
+
+    var entry = pathIndex[path] || resolve(path);
+    markActive(entry ? entry.path : null, entry && entry.path !== "index" ? initial(entry.title) : "");
+    if (!entry) {
+      showError("Kein Eintrag", "Zu „" + esc(path) + "“ steht nichts im Register. Vielleicht ist der Link veraltet.");
+      document.title = "Kein Eintrag · Eridune";
+      return;
+    }
+    contentEl.innerHTML = '<p class="laden">Der Eintrag wird aufgeschlagen …</p>';
+    fetchPage(entry.path).then(function (data) {
+      currentEntry = entry;
+      if (entry.path === "index") { renderStart(data); }
+      else {
+        contentEl.innerHTML = kopf(entry, data) + '<div class="koerper"><div class="article">' + render(wikilinks(stripH1(data.body))) + '</div><aside class="rand" aria-label="Verweise">' + backlinks(entry) + "</aside></div>" + FUSS;
+        decorate(contentEl);
+        document.title = entry.title + " · Eridune";
+      }
+      window.scrollTo(0, 0);
+      ensureSearchIndex();
+    }).catch(function (err) { showError("Seite nicht geladen", esc(err.message)); });
+  }
+
+  /* ---------- Suchindex (lädt alle Seiten im Hintergrund) ---------- */
+  function ensureSearchIndex() {
+    if (searchReady || searchLoading) return;
+    searchLoading = true;
+    var queue = manifest.pages.map(function (p) { return p.path; }), running = 0;
+    function next() {
+      if (!queue.length) {
+        if (running === 0) {
+          searchReady = true; searchLoading = false;
+          var rand = contentEl.querySelector(".rand");
+          if (currentEntry && rand && !rand.innerHTML.trim()) rand.innerHTML = backlinks(currentEntry);
+          if (searchInput.value.trim()) runSearch();
+        }
+        return;
+      }
+      var p = queue.shift(); running++;
+      fetchPage(p).catch(function () {}).then(function () { running--; next(); });
+    }
+    for (var i = 0; i < 6; i++) next();
+  }
+
+  /* ---------- Suche ---------- */
+  var timer = null;
+  searchInput.addEventListener("input", function () { clearTimeout(timer); timer = setTimeout(runSearch, 120); });
+  searchInput.addEventListener("focus", function () { ensureSearchIndex(); if (searchInput.value.trim()) runSearch(); });
+  searchInput.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { searchInput.value = ""; closeResults(); }
+    if (e.key === "Enter") { var first = resultsEl.querySelector("a"); if (first) { location.hash = first.getAttribute("href"); searchInput.blur(); closeNav(); } }
+    if (e.key === "ArrowDown") { var a = resultsEl.querySelector("a"); if (a) { e.preventDefault(); a.focus(); } }
+  });
+  resultsEl.addEventListener("keydown", function (e) {
+    var items = Array.prototype.slice.call(resultsEl.querySelectorAll("a")), i = items.indexOf(document.activeElement);
+    if (e.key === "ArrowDown" && i < items.length - 1) { e.preventDefault(); items[i + 1].focus(); }
+    if (e.key === "ArrowUp") { e.preventDefault(); (i > 0 ? items[i - 1] : searchInput).focus(); }
+    if (e.key === "Escape") { closeResults(); searchInput.focus(); }
+  });
+  resultsEl.addEventListener("click", function (e) { if (e.target.closest("a")) { closeResults(); closeNav(); } });
+  document.addEventListener("click", function (e) { if (!e.target.closest(".search")) closeResults(); });
+  function closeResults() { resultsEl.classList.remove("open"); }
+
+  function snippet(text, q) {
+    var i = text.toLowerCase().indexOf(q.toLowerCase());
+    if (i < 0) return "";
+    var s = Math.max(0, i - 50), e = Math.min(text.length, i + q.length + 70);
+    var out = esc((s > 0 ? "… " : "") + text.slice(s, e).replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, "$2").replace(/\[\[|\]\]|[*#>]/g, "") + (e < text.length ? " …" : ""));
+    return out.replace(new RegExp("(" + esc(q).replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig"), "<mark>$1</mark>");
+  }
+  function runSearch() {
+    var q = searchInput.value.trim();
+    if (!q) { closeResults(); resultsEl.innerHTML = ""; return; }
+    var ql = q.toLowerCase(), hits = [];
+    eintraege().forEach(function (p) {
+      var t = p.title.toLowerCase(), score = 0;
+      if (t.indexOf(ql) === 0) score = 12;
+      else if (t.indexOf(ql) > 0) score = 9;
+      else if (p.aliases.some(function (a) { return a.toLowerCase().indexOf(ql) >= 0; })) score = 7;
+      else if (pageCache[p.path] && pageCache[p.path].body.toLowerCase().indexOf(ql) >= 0) score = 3;
+      if (score) hits.push({ p: p, s: score + (p.w || 0) / 40 });
+    });
+    hits.sort(function (a, b) { return b.s - a.s || deCmp(a.p.title, b.p.title); });
+    hits = hits.slice(0, 10);
+    var html = hits.map(function (h) {
+      var sn = pageCache[h.p.path] ? snippet(stripH1(pageCache[h.p.path].body), q) : "";
+      return '<a class="result" role="option" href="' + href(h.p.path) + '"><span class="result-title">' + esc(h.p.title) + '</span><span class="result-typ">' + esc(TYP[h.p.type] || "") + "</span>" + (sn ? '<div class="result-snippet">' + sn + "</div>" : "") + "</a>";
+    }).join("");
+    if (!html) html = '<div class="result-empty">' + (searchReady ? "Dazu steht nichts im Register." : "Das Register wird noch geladen …") + "</div>";
+    resultsEl.innerHTML = html;
+    resultsEl.classList.add("open");
+  }
+
+  /* ---------- Menü (mobil) ---------- */
+  var menuBtn = document.getElementById("menu-btn");
+  function closeNav() { document.body.classList.remove("nav-open"); menuBtn.setAttribute("aria-expanded", "false"); }
+  menuBtn.addEventListener("click", function () {
+    var open = document.body.classList.toggle("nav-open");
+    menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  document.getElementById("backdrop").addEventListener("click", closeNav);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeNav(); });
+
+  /* ---------- Ansicht hell/dunkel ---------- */
+  var themeBtn = document.getElementById("theme-btn");
+  var mq = window.matchMedia("(prefers-color-scheme: dark)");
+  function isDark() { var t = document.documentElement.dataset.theme; return t ? t === "dark" : mq.matches; }
+  function syncThemeBtn() { themeBtn.textContent = isDark() ? "Hell" : "Dunkel"; themeBtn.setAttribute("aria-label", isDark() ? "Helle Ansicht" : "Dunkle Ansicht"); }
+  var saved = store("eridune.theme");
+  if (saved === "dark" || saved === "light") document.documentElement.dataset.theme = saved;
+  syncThemeBtn();
+  themeBtn.addEventListener("click", function () {
+    var next = isDark() ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    store("eridune.theme", next);
+    syncThemeBtn();
+  });
+  if (mq.addEventListener) mq.addEventListener("change", syncThemeBtn);
+
+  window.addEventListener("hashchange", route);
+  loadManifest().then(route).catch(function (err) {
+    showError("Eridune ließ sich nicht laden", esc(err.message) + " Prüfe, ob GitHub Pages aktiv ist (Settings, Pages, Branch main, Ordner /).");
+  });
+})();
+</script>
+</body>
+</html>
